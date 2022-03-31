@@ -14,7 +14,8 @@ public class MoveWithKeyboardBehavior : AgentBehaviour
     public override Steering GetSteering()
     {
         Steering steering = new Steering();
-        //implement your code here
+        steering.linear = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * agent.maxAccel;
+        steering.linear = this.transform.parent.TransformDirection(Vector3.ClampMagnitude(steering.linear, agent.maxAccel));
         return steering;
     }
 
