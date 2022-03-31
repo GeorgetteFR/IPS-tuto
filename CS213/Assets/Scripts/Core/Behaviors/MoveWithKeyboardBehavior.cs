@@ -4,19 +4,29 @@ using UnityEngine;
 
 //Input Keys
 public enum InputKeyboard{
-    arrows =0, 
+    arrows = 0, 
     wasd = 1
 }
 public class MoveWithKeyboardBehavior : AgentBehaviour
 {
-    public InputKeyboard inputKeyboard; 
+    public InputKeyboard inputKeyboard;
 
     public override Steering GetSteering()
     {
         Steering steering = new Steering();
         //implement your code here
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+
+//        inputKeyboard = this.GetComponent("Input Keyboard");
+        float horizontal;
+        float vertical;
+        if(inputKeyboard == InputKeyboard.arrows){
+            horizontal = Input.GetAxis("Horizontal");
+            vertical = Input.GetAxis("Vertical");
+        } else {
+            horizontal = Input.GetAxis("H2");
+            vertical = Input.GetAxis("V2");
+        }
+        
         steering.linear = new Vector3(horizontal, 0, vertical) * agent.maxAccel;
         steering.linear = this.transform.parent.TransformDirection(Vector3.ClampMagnitude(steering.linear, agent.maxAccel));
 

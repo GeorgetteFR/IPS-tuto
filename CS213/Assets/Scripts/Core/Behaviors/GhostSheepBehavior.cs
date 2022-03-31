@@ -3,9 +3,13 @@ using UnityEngine;
 
 public class GhostSheepBehavior : AgentBehaviour
 {    
+
+    public float minDistance = 27.0f;
+    public float ass = 50.0f;
+
     public void Start(){
-        CelluloAgent.tag = "Player 1";
-        CelluloAgent1.tag = "Player 2";
+        //CelluloAgent.tag = "Player 1";
+        //CelluloAgent1.tag = "Player 2";
     }
     public override Steering GetSteering()
     {
@@ -14,27 +18,36 @@ public class GhostSheepBehavior : AgentBehaviour
         //implement your code here.
         GameObject[] p1;
         GameObject[] p2;
-        p1 = GameObject.FindGameObjectsWithTag("Player 1");
-        p2 = GameObject.FindGameObjectsWithTag("Player 2");
+        p1 = GameObject.FindGameObjectsWithTag("Player1");
+        p2 = GameObject.FindGameObjectsWithTag("Player2");
+
         Vector3 position = transform.position;
         Vector3 pos1 = p1[0].transform.position - position;
         Vector3 pos2 = p2[0].transform.position - position;
+
         float dis1 = pos1.sqrMagnitude;
         float dis2 = pos2.sqrMagnitude;
-        Vector3 closest = null;
+        Vector3 closest = pos2;
 
-        if (dis1 < dis2)
+        if(Math.Abs(dis1 - dis2) < ass) {
+
+        }
+        else if (dis1 < dis2)
         {
             closest = pos1;
         }
-        else
-        {
-            closest = pos2;
+
+        Debug.Log(closest.sqrMagnitude);
+        if(closest.sqrMagnitude > minDistance) {
+            closest = Vector3.zero;
+        }
+        else {
+            closest.Normalize();
+
         }
 
-        m_Movement.Set(closest);
-        m_Movement.Normalize();
-        transform.Translate(Time.deltaTime * m_Movement);
+        steering.linear = -closest * agent.maxAccel;
+        steering.linear = transform.parent.TransformDirection(Vector3.ClampMagnitude(steering.linear, agent.maxAccel));
 
         return steering;
     }
