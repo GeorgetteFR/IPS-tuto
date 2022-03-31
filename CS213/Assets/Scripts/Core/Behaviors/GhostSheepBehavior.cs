@@ -4,8 +4,6 @@ using UnityEngine;
 public class GhostSheepBehavior : AgentBehaviour
 {    
     public void Start(){
-        CelluloAgent.tag = "Player 1";
-        CelluloAgent1.tag = "Player 2";
     }
     public override Steering GetSteering()
     {
@@ -21,20 +19,15 @@ public class GhostSheepBehavior : AgentBehaviour
         Vector3 pos2 = p2[0].transform.position - position;
         float dis1 = pos1.sqrMagnitude;
         float dis2 = pos2.sqrMagnitude;
-        Vector3 closest = null;
+        Vector3 closest = pos2;
 
         if (dis1 < dis2)
         {
             closest = pos1;
         }
-        else
-        {
-            closest = pos2;
-        }
 
-        m_Movement.Set(closest);
-        m_Movement.Normalize();
-        transform.Translate(Time.deltaTime * m_Movement);
+        closest.Normalize();
+        transform.Translate(Time.deltaTime * (-closest));
 
         return steering;
     }
