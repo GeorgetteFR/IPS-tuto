@@ -970,8 +970,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weight: 1
   minDistance: 27
-  par: 1
+  par: 3
   eps: 0.00001
+  xmin: 287.8
+  zmin: -19.7
+  xmid: 301.2
+  zmid: -10.5
+  xmax: 313
+  zmax: -2.84
 --- !u!1001 &1380099147
 PrefabInstance:
   m_ObjectHideFlags: 0
