@@ -2,18 +2,26 @@
 using UnityEngine;
 
 public class GhostSheepBehavior : AgentBehaviour
-{    
+{
 
     public float minDistance = 27.0f;
-    public float ass = 50.0f;
+    public float par = 3f;
+    public float eps = 0.00001f;
+    public float xmin = 287.8f;
+    public float zmin = -19.7f;
+    public float xmid = 301.2f;
+    public float zmid = -10.5f;
+    public float xmax = 313f;
+    public float zmax = -2.84f;
 
-    public void Start(){
+    public void Start()
+    {
         //CelluloAgent.tag = "Player 1";
         //CelluloAgent1.tag = "Player 2";
     }
     public override Steering GetSteering()
     {
-        
+
         Steering steering = new Steering();
         //implement your code here.
         GameObject[] p1;
@@ -29,21 +37,69 @@ public class GhostSheepBehavior : AgentBehaviour
         float dis2 = pos2.sqrMagnitude;
         Vector3 closest = pos2;
 
-        if(Math.Abs(dis1 - dis2) < ass) {
-
-        }
-        else if (dis1 < dis2)
+        if (dis1 < dis2)
         {
             closest = pos1;
         }
 
-        Debug.Log(closest.sqrMagnitude);
-        if(closest.sqrMagnitude > minDistance) {
+        if (closest.sqrMagnitude > minDistance)
+        {
             closest = Vector3.zero;
         }
-        else {
-            closest.Normalize();
+        else
+        {
+            if (dis1<minDistance && dis2<minDistance && (abs(Vector3.Dot(pos1, pos2) / (pos1.magnitude * pos2.magnitude)) < par))
+            {
+                Vector3 space = p1[0].transform.position;
+                if (abs(pos1.x) < eps)
+                {
+                    if (space.x > xmid)
+                    {
+                        closest = new Vector3(1, 0, 0);
+                    } else
+                    {
+                        closest = new Vector3(-1, 0, 0);
+                    }
+                } else
+                {
+                    if (space.z > zmid)
+                    {
+                        closest = new Vector3(-(pos1.z / pos1.x), 0, 1);
+                    }
+                    else
+                    {
+                        closest = new Vector3(pos1.z / pos1.x, 0, -1);
+                    }
+                    
+                }
+            } else
+            {
+                Debug.Log("(" + position.x + ", " + position.z + ")");
+                if (position.x >= xmax || position.x <= xmin)
+                {
+                    if (position.z > closest.z)
+                    {
+                        closest = new Vector3(0, 0, 1);
+                    }
+                    else
+                    {
+                        closest = new Vector3(0, 0, -1);
+                    }
+                }
+                else if (position.z >= zmax || position.z <= zmin)
+                {
+                    if (position.x > closest.x)
+                    {
+                        closest = new Vector3(1, 0, 0);
+                    }
+                    else
+                    {
+                        closest = new Vector3(-1, 0, 0);
+                    }
+                }
+            }
 
+            closest.Normalize();
         }
 
         steering.linear = -closest * agent.maxAccel;
@@ -52,6 +108,13 @@ public class GhostSheepBehavior : AgentBehaviour
         return steering;
     }
 
-
+    private float abs(float f)
+    {
+        if (f < 0)
+        {
+            return -f;
+        }
+        return f;
+    }
 
 }
