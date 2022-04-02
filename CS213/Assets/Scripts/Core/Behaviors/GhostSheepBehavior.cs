@@ -48,21 +48,22 @@ public class GhostSheepBehavior : AgentBehaviour
         }
         else
         {
-            if (dis1<minDistance && dis2<minDistance && (abs(Vector3.Dot(pos1, pos2) / (pos1.magnitude * pos2.magnitude)) < par))
+
+            float dir = Vector3.Dot(pos1, pos2) / (pos1.magnitude * pos2.magnitude);
+            if (dis1<minDistance && dis2<minDistance && abs(dir) < par && dir < 0)
             {
-                Vector3 space = p1[0].transform.position;
-                if (abs(pos1.x) < eps)
+                Debug.Log(position.x);
+                if (position.x < xmin + par)
                 {
-                    if (space.x > xmid)
-                    {
-                        closest = new Vector3(1, 0, 0);
-                    } else
-                    {
-                        closest = new Vector3(-1, 0, 0);
-                    }
-                } else
+                    closest = new Vector3(-1, 0, 0);
+                } 
+                else if (position.x > xmax - par)
                 {
-                    if (space.z > zmid)
+                    closest = new Vector3(1, 0, 0);
+                }
+                else
+                {
+                    if (position.z > zmid)
                     {
                         closest = new Vector3(-(pos1.z / pos1.x), 0, 1);
                     }
@@ -74,27 +75,26 @@ public class GhostSheepBehavior : AgentBehaviour
                 }
             } else
             {
-                Debug.Log("(" + position.x + ", " + position.z + ")");
                 if (position.x >= xmax || position.x <= xmin)
                 {
-                    if (position.z > closest.z)
+                    if (closest.z < 0)
                     {
-                        closest = new Vector3(0, 0, 1);
+                        closest = new Vector3(0, 0, -1);
                     }
                     else
                     {
-                        closest = new Vector3(0, 0, -1);
+                        closest = new Vector3(0, 0, 1);
                     }
                 }
                 else if (position.z >= zmax || position.z <= zmin)
                 {
-                    if (position.x > closest.x)
+                    if (closest.x < 0)
                     {
-                        closest = new Vector3(1, 0, 0);
+                        closest = new Vector3(-1, 0, 0);
                     }
                     else
                     {
-                        closest = new Vector3(-1, 0, 0);
+                        closest = new Vector3(1, 0, 0);
                     }
                 }
             }
