@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +17,6 @@ public class MoveWithKeyboardBehavior : AgentBehaviour
         Steering steering = new Steering();
         //implement your code here
 
-        //        inputKeyboard = this.GetComponent("Input Keyboard");
         float horizontal;
         float vertical;
         if (inputKeyboard == InputKeyboard.arrows)
