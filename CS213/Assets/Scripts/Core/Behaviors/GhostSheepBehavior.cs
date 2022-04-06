@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using UnityEngine;
 
 public class GhostSheepBehavior : AgentBehaviour
@@ -27,8 +27,8 @@ public class GhostSheepBehavior : AgentBehaviour
     public override Steering GetSteering()
     {
         locatePlayers();
-        //        sheep();
-        wolf();
+        sheep();
+        //wolf();
 
         return steering;
     }
@@ -137,5 +137,7 @@ public class GhostSheepBehavior : AgentBehaviour
         steering.linear = transform.parent.TransformDirection(Vector3.ClampMagnitude(steering.linear, agent.maxAccel));
     }
 
+    public void incrementScore() {
+        Debug.Log("ASSSSS");
+    }
 }
-
