@@ -22,15 +22,13 @@ public class GhostSheepBehavior : AgentBehaviour
     private float dis1;
     private float dis2;
 
-    public void Start()
-    {
-        //CelluloAgent.tag = "Player 1";
-        //CelluloAgent1.tag = "Player 2";
-    }
+    public void Start() { }
+
     public override Steering GetSteering()
     {
         locatePlayers();
-        steering = sheep();
+        //        sheep();
+        wolf();
 
         return steering;
     }
@@ -67,7 +65,7 @@ public class GhostSheepBehavior : AgentBehaviour
         }
     }
 
-    private Steering sheep()
+    private void sheep()
     {
         if (closest.sqrMagnitude > minDistance)
         {
@@ -130,8 +128,14 @@ public class GhostSheepBehavior : AgentBehaviour
 
         steering.linear = -closest * agent.maxAccel;
         steering.linear = transform.parent.TransformDirection(Vector3.ClampMagnitude(steering.linear, agent.maxAccel));
+    }
 
-        return steering;
+    private void wolf()
+    {
+        closest.Normalize();
+        steering.linear = closest * agent.maxAccel;
+        steering.linear = transform.parent.TransformDirection(Vector3.ClampMagnitude(steering.linear, agent.maxAccel));
     }
 
 }
+
