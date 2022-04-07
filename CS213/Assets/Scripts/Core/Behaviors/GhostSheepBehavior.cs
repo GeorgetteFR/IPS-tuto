@@ -22,14 +22,33 @@ public class GhostSheepBehavior : AgentBehaviour
     private Vector3 pos2;
     private float dis1;
     private float dis2;
+    private float timer;
+    private bool isSheep;
 
-    public void Start() { }
+    public void Start() {
+        timer = 0;
+        isSheep = true;
+    }
 
     public override Steering GetSteering()
     {
         locatePlayers();
-        sheep();
-        //wolf();
+
+        timer += Time.deltaTime;
+
+        if (isSheep)
+        {
+            sheep();
+        }else
+        {
+            wolf();
+        }
+
+        if(timer > Random.Range(10.0f,14.0f)) 
+        {
+            isSheep = !isSheep;
+            timer = 0;
+        }
 
         return steering;
     }
@@ -142,13 +161,15 @@ public class GhostSheepBehavior : AgentBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        GameObject gameObject = collision.gameObject;
-        if (gameObject.tag.Equals("Player1") || gameObject.tag.Equals("Player2"))
+        if (!isSheep)
         {
-            PlayerScore scoreScript = gameObject.GetComponent<PlayerScore>();
-            scoreScript.decrementScore();
+            GameObject gameObject = collision.gameObject;
+            if (gameObject.tag.Equals("Player1") || gameObject.tag.Equals("Player2"))
+            {
+                PlayerScore scoreScript = gameObject.GetComponent<PlayerScore>();
+                scoreScript.decrementScore();
+            }
         }
-
     }
 
     public void incrementScore()
