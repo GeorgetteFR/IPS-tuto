@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class PlayerScore : MonoBehaviour
 {
     public int score;
 
@@ -18,11 +18,11 @@ public class NewBehaviourScript : MonoBehaviour
         
     }
 
-    void incrementScore()
+    public void incrementScore()
     {
         score++;
     }
-    void decrementScore()
+    public void decrementScore()
     {
         score--;
     }
