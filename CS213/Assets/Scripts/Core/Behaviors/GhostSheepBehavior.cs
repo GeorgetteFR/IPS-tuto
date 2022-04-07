@@ -17,6 +17,7 @@ public class GhostSheepBehavior : AgentBehaviour
     private Steering steering;
     private Vector3 position;
     private Vector3 closest;
+    private GameObject closestPlayer;
     private Vector3 pos1;
     private Vector3 pos2;
     private float dis1;
@@ -58,10 +59,12 @@ public class GhostSheepBehavior : AgentBehaviour
         dis1 = pos1.sqrMagnitude;
         dis2 = pos2.sqrMagnitude;
         closest = pos2;
+        closestPlayer = p2[0];
 
         if (dis1 < dis2)
         {
             closest = pos1;
+            closestPlayer = p1[0];
         }
     }
 
@@ -137,7 +140,20 @@ public class GhostSheepBehavior : AgentBehaviour
         steering.linear = transform.parent.TransformDirection(Vector3.ClampMagnitude(steering.linear, agent.maxAccel));
     }
 
-    public void incrementScore() {
-        Debug.Log("ASSSSS");
+    void OnCollisionEnter(Collision collision)
+    {
+        GameObject gameObject = collision.gameObject;
+        if (gameObject.tag.Equals("Player1") || gameObject.tag.Equals("Player2"))
+        {
+            PlayerScore scoreScript = gameObject.GetComponent<PlayerScore>();
+            scoreScript.decrementScore();
+        }
+
+    }
+
+    public void incrementScore()
+    {
+        PlayerScore scoreScript = closestPlayer.GetComponent<PlayerScore>();
+        scoreScript.incrementScore();
     }
 }
