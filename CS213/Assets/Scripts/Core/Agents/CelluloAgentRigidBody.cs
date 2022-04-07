@@ -13,6 +13,8 @@ public class CelluloAgentRigidBody : CelluloAgent
     {
         base.Awake();
         _rigidBody = GetComponent<Rigidbody>();
+        GhostSheepBehavior sheepScript = gameObject.GetComponent<GhostSheepBehavior>();
+
     }
 
     protected override void FixedUpdate()
@@ -36,6 +38,10 @@ public class CelluloAgentRigidBody : CelluloAgent
 
         rotation = steering.angular == 0.0f ? 0.0f : rotation;
         velocity = transform.parent.InverseTransformDirection(_rigidBody.velocity);
+
+
+        GhostSheepBehavior sheepScript = gameObject.GetComponent<GhostSheepBehavior>();
+            sheepScript.isSheep; 
 
     }
 
